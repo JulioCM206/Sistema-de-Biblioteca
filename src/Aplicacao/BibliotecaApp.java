@@ -11,159 +11,178 @@ import Servico.Relatorio;
 import Servico.SistemaUsuario;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class BibliotecaApp {
 
-    private static final Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner;
+	private final SistemaDeLivros acervoService;
+	private final SistemaUsuario usuarioService;
+	private final SistemaDeEmprestimo emprestimoService;
+	private final Relatorio relatorioService;
 
-    private static final RepositorioLivro acervoRepo = new RepositorioLivro();
-    private static final RepositorioUsuario usuarioRepo = new RepositorioUsuario();
-    private static final RepositorioEmprestimo contagemRepo = new RepositorioEmprestimo();
+	public BibliotecaApp(Scanner scanner) {
+		this.scanner = Objects.requireNonNull(scanner, "Scanner não pode ser nulo");
 
-    private static final SistemaDeLivros acervoService = new SistemaDeLivros(acervoRepo);
-    private static final SistemaUsuario usuarioService = new SistemaUsuario(usuarioRepo);
-    private static final SistemaDeEmprestimo emprestimoService = new SistemaDeEmprestimo(acervoService, usuarioService, contagemRepo);
-    private static final Relatorio relatorioService = new Relatorio(acervoService, contagemRepo);
+		RepositorioLivro acervoRepo = new RepositorioLivro();
+		RepositorioUsuario usuarioRepo = new RepositorioUsuario();
+		RepositorioEmprestimo contagemRepo = new RepositorioEmprestimo();
 
-    static void main() {
-        inicializarDadosSimulados();
-        menuPrincipal();
-    }
+		this.acervoService = new SistemaDeLivros(acervoRepo);
+		this.usuarioService = new SistemaUsuario(usuarioRepo);
+		this.emprestimoService = new SistemaDeEmprestimo(acervoService, usuarioService, contagemRepo);
+		this.relatorioService = new Relatorio(acervoService, contagemRepo);
+	}
 
-    private static void inicializarDadosSimulados() {
-        try {
-            acervoService.cadastrarLivro("O Senhor dos Anéis", "J.R.R. Tolkien", "978-8595700813", 10);
-            acervoService.cadastrarLivro("Sapiens", "Yuval Noah Harari", "978-8535914849", 5);
-            acervoService.cadastrarLivro("Código Limpo", "Robert C. Martin", "978-8576059960", 3);
-            acervoService.cadastrarLivro("Padrões de Projeto (Digital)", "Erich Gamma et al.", "999-0000000001", 0);
+	public static void main(String[] args) {
+		try (Scanner scanner = new Scanner(System.in)) {
+			BibliotecaApp app = new BibliotecaApp(scanner);
+			app.inicializarDadosSimulados();
+			app.executarMenu();
+		} catch (Exception e) {
+			System.err.println("Erro fatal: " + e.getMessage());
+		}
+	}
 
-            usuarioService.cadastrarUsuario("Joao Dev", "1001");
-            usuarioService.cadastrarUsuario("Maria Leitora", "1002");
+	private void inicializarDadosSimulados() {
+		try {
+			acervoService.cadastrarLivro("O Senhor dos Anéis", "J.R.R. Tolkien", "978-8595700813", 10);
+			acervoService.cadastrarLivro("Sapiens", "Yuval Noah Harari", "978-8535914849", 5);
+			acervoService.cadastrarLivro("Código Limpo", "Robert C. Martin", "978-8576059960", 3);
+			acervoService.cadastrarLivro("Padrões de Projeto (Digital)", "Erich Gamma et al.", "999-0000000001", 0);
 
-            System.out.println("Dados iniciais carregados.");
-        } catch (Exception e) {
-            System.out.println("Erro ao inicializar dados: " + e.getMessage());
-        }
-    }
+			usuarioService.cadastrarUsuario("Joao Dev", "1001");
+			usuarioService.cadastrarUsuario("Maria Leitora", "1002");
 
-    private static void menuPrincipal() {
-        int opcao = -1;
-        while (opcao != 0) {
-            System.out.println("\n\n--- SISTEMA DE BIBLIOTECA ---");
-            System.out.println("1. Cadastrar Livro");
-            System.out.println("2. Cadastrar Usuário");
-            System.out.println("3. Listar Livros (Acervo)");
-            System.out.println("4. Realizar Empréstimo");
-            System.out.println("5. Realizar Devolução");
-            System.out.println("6. Gerar Relatório de Empréstimos");
-            System.out.println("0. Sair");
-            System.out.print("Escolha uma opção: ");
+			System.out.println("Dados iniciais carregados com sucesso.");
+		} catch (Exception e) {
+			System.err.println("Falha ao inicializar dados: " + e.getMessage());
+		}
+	}
 
-            if (scanner.hasNextInt()) {
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+	private void executarMenu() {
+		int opcao;
+		do {
+			exibirMenu();
+			opcao = lerInteiro("Escolha uma opção: ");
 
-                try {
-                    switch (opcao) {
-                        case 1: cadastrarLivro(); break;
-                        case 2: cadastrarUsuario(); break;
-                        case 3: listarLivros(); break;
-                        case 4: realizarEmprestimo(); break;
-                        case 5: realizarDevolucao(); break;
-                        case 6: gerarRelatorio(); break;
-                        case 0: System.out.println("Encerrando o sistema . . ."); break;
-                        default: System.out.println("Opção inválida. Tente novamente.");
-                    }
-                } catch (Exception e) {
-                    System.err.println("ERRO NA OPERAÇÃO: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Entrada inválida. Digite um número.");
-                scanner.nextLine();
-            }
-        }
-    }
+			try {
+				switch (opcao) {
+					case 1 -> cadastrarLivro();
+					case 2 -> cadastrarUsuario();
+					case 3 -> listarLivros();
+					case 4 -> realizarEmprestimo();
+					case 5 -> realizarDevolucao();
+					case 6 -> gerarRelatorio();
+					case 0 -> System.out.println("Encerrando o sistema...");
+					default -> System.out.println("Opção inválida. Tente novamente.");
+				}
+			} catch (IllegalArgumentException e) {
+				System.err.println("Entrada inválida: " + e.getMessage());
+			} catch (Exception e) {
+				System.err.println("Erro durante a operação: " + e.getMessage());
+			}
+		} while (opcao != 0);
+	}
 
+	private void exibirMenu() {
+		System.out.println("\n--- SISTEMA DE BIBLIOTECA ---");
+		System.out.println("1. Cadastrar Livro");
+		System.out.println("2. Cadastrar Usuário");
+		System.out.println("3. Listar Livros");
+		System.out.println("4. Realizar Empréstimo");
+		System.out.println("5. Realizar Devolução");
+		System.out.println("6. Gerar Relatório");
+		System.out.println("0. Sair");
+	}
 
-    private static void cadastrarLivro() {
-        System.out.println("\n--- CADASTRO DE LIVRO ---");
-        System.out.print("Título: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Autor: ");
-        String autor = scanner.nextLine();
-        System.out.print("ISBN: ");
-        String isbn = scanner.nextLine();
-        System.out.print("Quantidade de Cópias (0 para Digital): ");
-        int quantidade = scanner.nextInt();
-        scanner.nextLine();
+	private void cadastrarLivro() {
+		System.out.println("\n--- CADASTRO DE LIVRO ---");
+		String titulo = lerTexto("Título: ");
+		String autor = lerTexto("Autor: ");
+		String isbn = lerTexto("ISBN: ");
+		int quantidade = lerInteiro("Quantidade de Cópias (0 = Digital): ");
 
-        acervoService.cadastrarLivro(titulo, autor, isbn, quantidade);
-        System.out.println("Livro '" + titulo + "' cadastrado/Atualizado com sucesso!");
-    }
+		if (titulo.isBlank() || autor.isBlank() || isbn.isBlank()) {
+			throw new IllegalArgumentException("Título, autor e ISBN são obrigatórios.");
+		}
+		if (quantidade < 0) {
+			throw new IllegalArgumentException("Quantidade não pode ser negativa.");
+		}
 
+		acervoService.cadastrarLivro(titulo, autor, isbn, quantidade);
+		System.out.printf("Livro '%s' cadastrado com sucesso.%n", titulo);
+	}
 
-    private static void cadastrarUsuario() {
-        System.out.println("\n--- CADASTRO DE USUÁRIO ---");
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
-        System.out.print("ID Único: ");
-        String id = scanner.nextLine();
+	private void cadastrarUsuario() {
+		System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+		String nome = lerTexto("Nome: ");
+		String id = lerTexto("ID único: ");
 
-        usuarioService.cadastrarUsuario(nome, id);
-        System.out.println("Usuário '" + nome + "' (ID: " + id + ") cadastrado com sucesso!");
-    }
+		if (nome.isBlank() || id.isBlank()) {
+			throw new IllegalArgumentException("Nome e ID são obrigatórios.");
+		}
 
+		usuarioService.cadastrarUsuario(nome, id);
+		System.out.printf("Usuário '%s' cadastrado com sucesso.%n", nome);
+	}
 
-    private static void listarLivros() {
-        System.out.println("\n--- ACERVO DA BIBLIOTECA ---");
-        List<Livro> livros = acervoService.listarLivro();
+	private void listarLivros() {
+		System.out.println("\n--- ACERVO DA BIBLIOTECA ---");
+		List<Livro> livros = acervoService.listarLivro();
 
-        if (livros.isEmpty()) {
-            System.out.println("O acervo está vazio.");
-            return;
-        }
+		if (livros.isEmpty()) {
+			System.out.println("O acervo está vazio.");
+			return;
+		}
 
-        for (Livro livro : livros) {
-            String disponibilidade;
-            if (livro instanceof LivroFisico lf) {
-                disponibilidade = String.format("Físico | Disponível: %d/%d",
-                        lf.getQuantidadeDisponivel(),
-                        lf.getQuantidadeTotal());
-            } else {
-                disponibilidade = "Digital | Sempre Disponível";
-            }
-            System.out.printf("- Título: %s | Autor: %s | ISBN: %s | Tipo: %s%n",
-                    livro.getTitulo(), livro.getAutor(), livro.getISBN(), disponibilidade);
-        }
-    }
+		for (Livro livro : livros) {
+			String tipo = (livro instanceof LivroFisico lf)
+			? String.format("Físico | Disponível: %d/%d", lf.getQuantidadeDisponivel(), lf.getQuantidadeTotal())
+			: "Digital | Sempre disponível";
 
-    // FUNÇÃO 3: Realizar Empréstimo
-    private static void realizarEmprestimo() {
-        System.out.println("\n--- REALIZAR EMPRÉSTIMO ---");
-        System.out.print("ID do Usuário: ");
-        String userId = scanner.nextLine();
-        System.out.print("ISBN do Livro: ");
-        String isbn = scanner.nextLine();
+			System.out.printf("- %s | %s | ISBN: %s | %s%n",
+				livro.getTitulo(), livro.getAutor(), livro.getISBN(), tipo);
+		}
+	}
 
-        emprestimoService.realizarEmprestimo(userId, isbn);
-        System.out.println("Empréstimo registrado com sucesso!");
-    }
+	private void realizarEmprestimo() {
+		System.out.println("\n--- REALIZAR EMPRÉSTIMO ---");
+		String userId = lerTexto("ID do Usuário: ");
+		String isbn = lerTexto("ISBN do Livro: ");
+		emprestimoService.realizarEmprestimo(userId, isbn);
+		System.out.println("Empréstimo registrado com sucesso.");
+	}
 
-    // FUNÇÃO 4: Realizar Devolução
-    private static void realizarDevolucao() {
-        System.out.println("\n--- REALIZAR DEVOLUÇÃO ---");
-        System.out.print("ID do Usuário: ");
-        String userId = scanner.nextLine();
-        System.out.print("ISBN do Livro a ser devolvido: ");
-        String isbn = scanner.nextLine();
+	private void realizarDevolucao() {
+		System.out.println("\n--- REALIZAR DEVOLUÇÃO ---");
+		String userId = lerTexto("ID do Usuário: ");
+		String isbn = lerTexto("ISBN do Livro: ");
+		emprestimoService.realizarDevolucao(userId, isbn);
+		System.out.println("Devolução registrada com sucesso.");
+	}
 
-        emprestimoService.realizarDevolucao(userId, isbn);
-        System.out.println("Devolução registrada com sucesso!");
-    }
+	private void gerarRelatorio() {
+		System.out.println("\n--- RELATÓRIO DE EMPRÉSTIMOS ---");
+		System.out.println(relatorioService.GerarRelatorio());
+	}
 
-    // FUNÇÃO 6: Gerar Relatório
-    private static void gerarRelatorio() {
-        System.out.println(relatorioService.GerarRelatorio());
-    }
+	private String lerTexto(String mensagem) {
+		System.out.print(mensagem);
+		return scanner.nextLine().trim();
+	}
+
+	private int lerInteiro(String mensagem) {
+		while (true) {
+			System.out.print(mensagem);
+			if (scanner.hasNextInt()) {
+				int valor = scanner.nextInt();
+				scanner.nextLine();
+				return valor;
+			}
+			System.out.println("Entrada inválida. Digite um número inteiro.");
+			scanner.nextLine();
+		}
+	}
 }
