@@ -1,12 +1,13 @@
 package Servico;
 
 import Modelo.Usuario;
-import Repositorios.RepositorioUsuario;
+// import Repositorios.RepositorioUsuario;
+import Repositorios.InterfaceRepositorioUsuario;
 
 public class SistemaUsuario {
-    private final RepositorioUsuario repositorioUsuario;
+    private final InterfaceRepositorioUsuario repositorioUsuario;
 
-    public SistemaUsuario(RepositorioUsuario repositorioUsuario) {
+    public SistemaUsuario(InterfaceRepositorioUsuario repositorioUsuario) {
         this.repositorioUsuario = repositorioUsuario;
     }
 
@@ -19,11 +20,6 @@ public class SistemaUsuario {
     }
 
     public Usuario buscarUsuarioPorID(String ID) {
-        return repositorioUsuario.buscarPorID(ID);
+        return repositorioUsuario.buscarPorID(ID).orElseThrow(() -> new IllegalArgumentException("Usuario com ID " + ID + " não encontrado."));
     }
-/*
-    public List<Usuario> listarUsuarios() {
-        return repositorioUsuario.ListarRepositorioUsuario();
-    }
-*/
 }

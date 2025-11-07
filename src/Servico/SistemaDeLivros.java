@@ -2,13 +2,14 @@ package Servico;
 import Modelo.Livro;
 import Modelo.LivroFisico;
 import Modelo.LivroDigital;
-import Repositorios.RepositorioLivro;
+// import Repositorios.RepositorioLivro;
 import java.util.List;
+import Repositorios.InterfaceRepositorioLivro; //tirar import do repositorio depois
 
 public class SistemaDeLivros {
-    private final RepositorioLivro repositorioLivro;
+    private final InterfaceRepositorioLivro repositorioLivro;
 
-    public SistemaDeLivros(RepositorioLivro repositorioLivro) {
+    public SistemaDeLivros(InterfaceRepositorioLivro repositorioLivro) {
         this.repositorioLivro = repositorioLivro;
     }
 
@@ -33,6 +34,6 @@ public class SistemaDeLivros {
     }
 
     public Livro buscarLivroPorISBN(String ISBN) {
-        return repositorioLivro.buscarPorISBN(ISBN);
+        return repositorioLivro.buscarPorISBN(ISBN).orElseThrow(() -> new IllegalArgumentException("Livro com ISBN " + ISBN + " não encontrado."));
     }
 }

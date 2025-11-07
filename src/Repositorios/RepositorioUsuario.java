@@ -3,27 +3,28 @@ package Repositorios;
 import Modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class RepositorioUsuario  {
+public class RepositorioUsuario implements InterfaceRepositorioUsuario {
     private final List<Usuario> usuarios;
 
     public RepositorioUsuario() {
         this.usuarios = new ArrayList<>();
     }
+
+    @Override
     public void adicionarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
     }
 
-    public Usuario buscarPorID(String ID) {
+    @Override
+    public Optional<Usuario> buscarPorID(String ID) {
         for (Usuario u : usuarios) {
             if (u.getID().equals(ID)) {
-                return u;
+                return Optional.of(u);
             }
         }
-        return null;
+        return Optional.empty();
 
     }
-//    public List<Usuario> ListarRepositorioUsuario() {
-//        return new ArrayList<>(this.usuarios);
-//    }
 }

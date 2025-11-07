@@ -5,14 +5,15 @@ import Modelo.Livro;
 import Modelo.LivroDigital;
 import Modelo.LivroFisico;
 import Modelo.Usuario;
-import Repositorios.RepositorioEmprestimo;
+// import Repositorios.RepositorioEmprestimo;
+import Repositorios.InterfaceRepositorioEmprestimo;
 
 public class SistemaDeEmprestimo {
     private final SistemaDeLivros sistemaLivros;
     private final SistemaUsuario sistemaUsuario;
-    private final RepositorioEmprestimo contagemRepo;
+    private final InterfaceRepositorioEmprestimo contagemRepo;
 
-    public SistemaDeEmprestimo(SistemaDeLivros sistemaDeLivros, SistemaUsuario sistemaDeUsuario,  RepositorioEmprestimo contagemRepo) {
+    public SistemaDeEmprestimo(SistemaDeLivros sistemaDeLivros, SistemaUsuario sistemaDeUsuario,  InterfaceRepositorioEmprestimo contagemRepo) {
         this.sistemaLivros = sistemaDeLivros;
         this.sistemaUsuario = sistemaDeUsuario;
         this.contagemRepo = contagemRepo;
