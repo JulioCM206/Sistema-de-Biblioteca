@@ -1,7 +1,7 @@
 package Modelo;
 
 public class LivroDigital extends Livro {
-    public LivroDigital(String titulo, String autor, String ISBN) {
-        super(titulo, autor, ISBN);
-    }
+	public LivroDigital(String titulo, String autor, String isbn) {
+		super(titulo, autor, isbn);
+	}
 }

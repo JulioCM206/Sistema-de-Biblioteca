@@ -1,25 +1,32 @@
 package Modelo;
-//livro vai ser uma interface ou uma classe abstrata para livros digitais ou fisicos
-//faz esse aq sem quantidade de livro definida pra na classe livro fisico ter quantidade e no digtal n
 public abstract class Livro {
-private final String titulo;
-private final String autor;
-private final String ISBN;
+	private final String titulo;
+	private final String autor;
+	private final String isbn;
 
-public Livro(String titulo, String autor, String ISBN) {
-    this.titulo = titulo;
-    this.autor = autor;
-    this.ISBN = ISBN;
-}
-public String getTitulo() {
-    return titulo;
-}
+	public Livro(String titulo, String autor, String isbn) {
+		if (titulo == null || titulo.isBlank()){
+			throw new IllegalArgumentException("Título não pode ser nulo!");
+		}
+		if (autor == null || autor.isBlank()){
+			throw new IllegalArgumentException("Autor não pode ser nulo!");
+		}
+		if (isbn == null || isbn.isBlank()){
+			throw new IllegalArgumentException("ISBN não pode ser nulo!");
+		}
+		this.titulo = titulo;
+		this.autor = autor;
+		this.isbn = isbn;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
 
-public String getAutor() {
-    return autor;
-}
+	public String getAutor() {
+		return autor;
+	}
 
-public String getISBN() {
-    return ISBN;
-}
+	public String getISBN() {
+		return isbn;
+	}
 }
