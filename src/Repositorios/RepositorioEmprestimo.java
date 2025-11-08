@@ -5,25 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RepositorioEmprestimo implements InterfaceRepositorioEmprestimo{
-    private final Map<String, Integer> ContagemDeEmprestimos;
+	private final Map<String, Integer> ContagemDeEmprestimos;
 
-    public RepositorioEmprestimo(){
-        ContagemDeEmprestimos = new HashMap<>();
-    }
+	public RepositorioEmprestimo(){
+		ContagemDeEmprestimos = new HashMap<>();
+	}
 
-    @Override
-    public void incrementarContagemDeEmprestimo(String ISBN){
-        this.ContagemDeEmprestimos.put(ISBN, this.ContagemDeEmprestimos.getOrDefault(ISBN,0) + 1);
-    }
+	@Override
+	public void incrementarContagemDeEmprestimo(String isbn){
+		this.ContagemDeEmprestimos.put(isbn, this.ContagemDeEmprestimos.getOrDefault(isbn,0) + 1);
+	}
 
-    @Override
-    public Map<String, Integer> listarContagem() {
-        // Retorna uma visão imutável para proteger o estado interno
-        return Collections.unmodifiableMap(ContagemDeEmprestimos);
-    }
+	@Override
+	public Map<String, Integer> listarContagem() {
+		return Collections.unmodifiableMap(ContagemDeEmprestimos);
+	}
 
-    @Override
-    public int getTotalEmprestimos() {
-        return ContagemDeEmprestimos.values().stream().mapToInt(Integer::intValue).sum();
-    }
+	@Override
+	public int getTotalEmprestimos() {
+		return ContagemDeEmprestimos.values().stream().mapToInt(Integer::intValue).sum();
+	}
 }

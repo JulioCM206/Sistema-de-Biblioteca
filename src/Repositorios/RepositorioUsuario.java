@@ -6,25 +6,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class RepositorioUsuario implements InterfaceRepositorioUsuario {
-    private final List<Usuario> usuarios;
+	private final List<Usuario> usuarios;
 
-    public RepositorioUsuario() {
-        this.usuarios = new ArrayList<>();
-    }
+	public RepositorioUsuario() {
+		this.usuarios = new ArrayList<>();
+	}
 
-    @Override
-    public void adicionarUsuario(Usuario usuario) {
-        this.usuarios.add(usuario);
-    }
+	@Override
+	public void adicionarUsuario(Usuario usuario) {
+		this.usuarios.add(usuario);
+	}
 
-    @Override
-    public Optional<Usuario> buscarPorID(String ID) {
-        for (Usuario u : usuarios) {
-            if (u.getID().equals(ID)) {
-                return Optional.of(u);
-            }
-        }
-        return Optional.empty();
+	@Override
+	public Optional<Usuario> buscarPorID(String id) {
+		for (Usuario u : usuarios) {
+			if (u.getId().equals(id)) {
+				return Optional.of(u);
+			}
+		}
+		return Optional.empty();
 
-    }
+	}
 }
