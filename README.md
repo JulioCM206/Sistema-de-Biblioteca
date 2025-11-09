@@ -41,8 +41,11 @@ O sistema permite o controle completo de livros, usuários e operações de empr
 
 src/
 ├── Aplicacao/
-├── Modelo/ 
-├── Repositorios/    
+
+├── Modelo/
+
+├── Repositorios/
+
 └── Servico/
 
 ---
@@ -52,13 +55,21 @@ src/
 ### Passos:
 
 1. Entre na pasta do projeto:
-   ```bash
-   cd src```
+   ```
+   bash
+   cd src
+   ``` 
 2. Compile todos os arquivos ```.java```:
-    ```javac Aplicacao/BibliotecaApp.java```
+    ```
+    javac Aplicacao/BibliotecaApp.java
+    ```
 
 ---
 
 ## ▶️ Instruções para Executar o Sistema
 
-```java Aplicacao.BibliotecaApp```
+Após compilar, execute o programa com:
+
+```
+java Aplicacao.BibliotecaApp
+```
