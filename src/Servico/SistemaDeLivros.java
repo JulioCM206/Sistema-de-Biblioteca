@@ -2,6 +2,7 @@ package Servico;
 import Modelo.Livro;
 import Modelo.LivroFisico;
 import Modelo.LivroDigital;
+import Modelo.ControleLivroFisico;
 import java.util.List;
 import Repositorios.InterfaceRepositorioLivro;
 
@@ -15,9 +16,10 @@ public class SistemaDeLivros {
 	public void cadastrarLivro(String titulo, String autor, String ISBN, int quantidade) throws IllegalArgumentException {
 		Livro livroExistente = buscarLivroPorISBN(ISBN);
 
-		if (livroExistente instanceof ControleDeLivroFisico livroFisico) {
-            livroFisico.AdicionarCopias(quantidade);
-            return;
+		if (livroExistente instanceof ControleLivroFisico) {
+			ControleLivroFisico livroFisico = (ControleLivroFisico) livroExistente;
+			livroFisico.adicionarCopias(quantidade);
+			return;
 		}
 
 		Livro novoLivro = (quantidade > 0)

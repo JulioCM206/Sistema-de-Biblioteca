@@ -23,7 +23,7 @@ public class BibliotecaApp {
 	private final Relatorio relatorioService;
 
 	public BibliotecaApp(Scanner scanner) {
-		this.scanner = Objects.requireNonNull(scanner, "Scanner não pode ser nulo");
+		this.scanner = Objects.requireNonNull(scanner, "Scanner não pode ser nulo.");
 
 		RepositorioLivro acervoRepo = new RepositorioLivro();
 		RepositorioUsuario usuarioRepo = new RepositorioUsuario();
@@ -52,7 +52,7 @@ public class BibliotecaApp {
 			acervoService.cadastrarLivro("Código Limpo", "Robert C. Martin", "978-8576059960", 3);
 			acervoService.cadastrarLivro("Padrões de Projeto (Digital)", "Erich Gamma et al.", "999-0000000001", 0);
 
-			usuarioService.cadastrarUsuario("Joao Dev", "1001");
+			usuarioService.cadastrarUsuario("João Dev", "1001");
 			usuarioService.cadastrarUsuario("Maria Leitora", "1002");
 
 			System.out.println("Dados iniciais carregados com sucesso.");
@@ -164,8 +164,7 @@ public class BibliotecaApp {
 	}
 
 	private void gerarRelatorio() {
-		System.out.println("\n--- RELATÓRIO DE EMPRÉSTIMOS ---");
-		System.out.println(relatorioService.GerarRelatorio());
+		System.out.println(relatorioService.gerarRelatorio());
 	}
 
 	private String lerTexto(String mensagem) {

@@ -20,39 +20,27 @@ public class LivroFisico extends Livro implements ControleLivroFisico{
 	}
 
 	@Override
-    public boolean podeEmprestar(){
-        return quantidadeDisponivel <= 0;
-    }
+	public boolean podeEmprestar(){
+		return quantidadeDisponivel <= 0;
+	}
 
-    @Override
-    public void registrarEmprestimo(){
-        if(podeEmprestar()){
-            throw new IllegalStateException("Falta de estoque do livro " + getISBN() + " no sistema");
-        }
-        this.quantidadeDisponivel--;
-    }
-
-    @Override
-    public void registrarDevolucao() {
-        if (quantidadeDisponivel < quantidadeTotal) {
-            this.quantidadeDisponivel++;
-        }
-    }
-
-	// public boolean Emprestar(){
-	// 	if(quantidadeDisponivel > 0){
-	// 		this.quantidadeDisponivel--;
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-	// public void devolver(){
-	// 	if (quantidadeDisponivel < quantidadeTotal){
-	// 		this.quantidadeDisponivel++;
-	// 	}
-	// }
 	@Override
-	public void AdicionarCopias(int copias){
+	public void registrarEmprestimo(){
+		if(podeEmprestar()){
+			throw new IllegalStateException("Falta de estoque do livro " + getISBN() + " no sistema.");
+		}
+		this.quantidadeDisponivel--;
+	}
+
+	@Override
+	public void registrarDevolucao() {
+		if (quantidadeDisponivel < quantidadeTotal) {
+			this.quantidadeDisponivel++;
+		}
+	}
+
+	@Override
+	public void adicionarCopias(int copias){
 		if (copias <= 0){
 			throw new IllegalArgumentException("Número de copias deve ser um número positivo.");
 		}

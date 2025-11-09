@@ -15,7 +15,7 @@ public class Relatorio {
 		this.sistemaDeEmprestimo = sistemaDeEmprestimo;
 	}
 
-	public String GerarRelatorio() {
+	public String gerarRelatorio() {
 		Map<String, Integer> contagemDeEmprestimosPorLivro = sistemaDeEmprestimo.listarContagem();
 		int totalEmprestimos = sistemaDeEmprestimo.getTotalEmprestimos();
 
@@ -25,7 +25,7 @@ public class Relatorio {
 		.toList();
 		StringBuilder relatorio = new StringBuilder();
 		relatorio.append("--- RELATÓRIO  DE EMPRÉSTIMOS ---\n");
-		relatorio.append("Numero Empréstimos por Livro:\n");
+		relatorio.append("Número Empréstimos por Livro:\n");
 
 		for (Map.Entry<String , Integer> entry : listaOrdenada) {
 			Livro livro = sistemaDeLivros.buscarLivroPorISBN(entry.getKey());

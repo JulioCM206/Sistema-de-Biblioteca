@@ -5,6 +5,7 @@ import Modelo.Livro;
 import Modelo.LivroDigital;
 import Modelo.LivroFisico;
 import Modelo.Usuario;
+import Modelo.ControleLivroFisico;
 import Repositorios.InterfaceRepositorioEmprestimo;
 
 public class SistemaDeEmprestimo {
@@ -22,17 +23,17 @@ public class SistemaDeEmprestimo {
 		Usuario usuario = sistemaUsuario.buscarUsuarioPorID(UsuarioID);
 		Livro livro = sistemaLivros.buscarLivroPorISBN(livroISBN);
 		if(livro == null ){
-			throw new IllegalStateException("Livro nao encontrado no Sistema");
+			throw new IllegalStateException("Livro não encontrado no sistema.");
 		}
 		if(usuario == null){
-			throw new IllegalStateException("Usuário nao encontrado no Sistema");
+			throw new IllegalStateException("Usuário não encontrado no sistema.");
 		}
 		
 		boolean disponivel = true;
 
-        if (livro instanceof ControleDeLivroFisico livroFisico) {
+        if (livro instanceof ControleLivroFisico livroFisico) {
             if (livroFisico.podeEmprestar()) {
-                throw new IllegalStateException("Falta de estoque do livro " + livro.getISBN() + "no sistema");
+                throw new IllegalStateException("Falta de estoque do livro " + livro.getISBN() + "no sistema.");
             }
             livroFisico.registrarEmprestimo();
         }
@@ -45,7 +46,7 @@ public class SistemaDeEmprestimo {
 	public Emprestimo realizarDevolucao(String UsuarioID, String livroISBN){
 		Usuario usuario = sistemaUsuario.buscarUsuarioPorID(UsuarioID);
 		if(usuario == null){
-			throw new IllegalStateException("Usuário nao encontrado no Sistema");
+			throw new IllegalStateException("Usuário não encontrado no sistema.");
 		}
 		Emprestimo emprestimoAtivo = usuario.getHistorico().stream()
 		.filter(e -> e.getLivro().getISBN().equals(livroISBN) && e.estaEmAndamento())
