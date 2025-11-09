@@ -15,11 +15,9 @@ public class SistemaDeLivros {
 	public void cadastrarLivro(String titulo, String autor, String ISBN, int quantidade) throws IllegalArgumentException {
 		Livro livroExistente = buscarLivroPorISBN(ISBN);
 
-		if (livroExistente != null) {
-			if (livroExistente instanceof LivroFisico livrofisico) {
-				livrofisico.AdicionarCopias(quantidade);
-				return;
-			}
+		if (livroExistente instanceof ControleDeLivroFisico livroFisico) {
+            livroFisico.AdicionarCopias(quantidade);
+            return;
 		}
 
 		Livro novoLivro = (quantidade > 0)

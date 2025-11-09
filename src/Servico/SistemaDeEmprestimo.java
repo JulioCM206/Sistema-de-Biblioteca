@@ -27,15 +27,16 @@ public class SistemaDeEmprestimo {
 		if(usuario == null){
 			throw new IllegalStateException("Usuário nao encontrado no Sistema");
 		}
-		boolean disponivel = false;
-		if(livro instanceof LivroFisico){
-			disponivel = ((LivroFisico) livro).Emprestar();
-		} else if(livro instanceof LivroDigital){
-			disponivel = true;
-		}
-		if(!disponivel){
-			throw new IllegalStateException("Falta de estoque do livro "+ livro.getISBN() + "no sistema");
-		}
+		
+		boolean disponivel = true;
+
+        if (livro instanceof ControleDeLivroFisico livroFisico) {
+            if (livroFisico.podeEmprestar()) {
+                throw new IllegalStateException("Falta de estoque do livro " + livro.getISBN() + "no sistema");
+            }
+            livroFisico.registrarEmprestimo();
+        }
+
 		Emprestimo novoEmprestimo = new Emprestimo(usuario, livro);
 		usuario.adicionarEmprestimo(novoEmprestimo);
 		contagemRepo.incrementarContagemDeEmprestimo(livroISBN);
@@ -59,7 +60,7 @@ public class SistemaDeEmprestimo {
 
 		Livro livro = emprestimoAtivo.getLivro();
 		if(livro instanceof LivroFisico){
-		((LivroFisico) livro).devolver();
+		((LivroFisico) livro).registrarDevolucao();
 		}
 
 		return emprestimoAtivo;
