@@ -8,10 +8,7 @@ public class Emprestimo {
 	private final Usuario usuario;
 	private final Livro livro;
 	private final LocalDate dataEmprestimo;
-	private final LocalDate dataPrevista;
 	private LocalDate dataDevolucao;
-
-	private static int PrazoEmprestimoPadrao = 14;
 
 	public Emprestimo(Usuario usuario, Livro livro) {
 		if (usuario == null){
@@ -22,8 +19,7 @@ public class Emprestimo {
 		}
 		this.usuario = usuario;
 		this.livro = livro;
-		this.dataEmprestimo = LocalDate.now();
-		this.dataPrevista = this.dataEmprestimo.plusDays(PrazoEmprestimoPadrao); 
+		this.dataEmprestimo = LocalDate.now(); 
 	}
 	public void registrarDevolucao() {
 		if (dataDevolucao != null){
@@ -42,10 +38,6 @@ public class Emprestimo {
 
 	public LocalDate getDataEmprestimo() {
 		return dataEmprestimo;
-	}
-
-	public LocalDate getDataPrevista() {
-		return dataPrevista;
 	}
 
 	public LocalDate getDataDevolucao() {
