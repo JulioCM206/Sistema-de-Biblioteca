@@ -40,6 +40,7 @@ O sistema permite o controle completo de livros, usuários e operações de empr
 ## 🗂️ Estrutura do Projeto
 
 src/
+
 ├── Aplicacao/
 
 ├── Modelo/
@@ -55,11 +56,14 @@ src/
 ### Passos:
 
 1. Entre na pasta do projeto:
+
    ```
    bash
    cd src
    ``` 
+
 2. Compile todos os arquivos ```.java```:
+
     ```
     javac Aplicacao/BibliotecaApp.java
     ```
