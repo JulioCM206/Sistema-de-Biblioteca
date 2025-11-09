@@ -58,7 +58,6 @@ src/
 1. Entre na pasta do projeto:
 
    ```
-   bash
    cd src
    ``` 
 
