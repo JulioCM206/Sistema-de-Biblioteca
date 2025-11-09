@@ -3,7 +3,7 @@ import Modelo.Livro;
 import Modelo.LivroFisico;
 import Modelo.LivroDigital;
 import java.util.List;
-import Repositorios.InterfaceRepositorioLivro; //tirar import do repositorio depois
+import Repositorios.InterfaceRepositorioLivro;
 
 public class SistemaDeLivros {
 	private final InterfaceRepositorioLivro repositorioLivro;

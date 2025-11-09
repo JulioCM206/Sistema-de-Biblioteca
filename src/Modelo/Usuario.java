@@ -26,7 +26,6 @@ public class Usuario {
 	public List<Emprestimo> getHistorico() {
 		return Collections.unmodifiableList(historicoEmprestimos);
 	}
-	// Método para adicionar um empréstimo ao histórico
 	public void adicionarEmprestimo(Emprestimo emprestimo) {
 		if (emprestimo == null){
 			throw new IllegalArgumentException("O empréstimo não pode ser nulo");
